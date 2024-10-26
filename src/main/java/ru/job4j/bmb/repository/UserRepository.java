@@ -1,4 +1,4 @@
-package ru.job4j.repository;
+package ru.job4j.bmb.repository;
 
 /**
  * Класс, который отвечает за хранение данных о пользователях.

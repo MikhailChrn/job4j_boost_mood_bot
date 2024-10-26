@@ -1,4 +1,4 @@
-package ru.job4j.engine;
+package ru.job4j.bmb.engine;
 
 /**
  * Интерфейс, который определяет методы для получения контента
