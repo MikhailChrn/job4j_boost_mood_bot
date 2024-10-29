@@ -1,7 +1,7 @@
 package ru.job4j.bmb;
 
 import ru.job4j.bmb.content.Content;
-import ru.job4j.bmb.telegram.BotCommandHandler;
+import ru.job4j.bmb.services.BotCommandHandler;
 import ru.job4j.bmb.telegram.TelegramBotService;
 
 public class DIByDirectInjectMain {
