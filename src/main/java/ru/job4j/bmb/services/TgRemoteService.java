@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.job4j.bmb.model.User;
 import ru.job4j.bmb.repository.UserRepository;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,10 +57,7 @@ public class TgRemoteService extends TelegramLongPollingBot {
             var message = update.getMessage();
             if ("/start".equals(message.getText())) {
                 long chatId = message.getChatId();
-                var user = new User();
-                user.setClientId(message.getFrom().getId());
-                user.setChatId(chatId);
-                userRepository.add(user);
+
                 send(sendButtons(chatId));
             }
         }
