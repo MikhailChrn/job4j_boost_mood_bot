@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
+/**
+ * User – пользователь системы
+ */
+
 @Entity
 @Table(name = "mb_user")
 public class User {
