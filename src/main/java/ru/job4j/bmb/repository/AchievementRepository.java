@@ -1,8 +1,12 @@
 package ru.job4j.bmb.repository;
 
-/**
- * Класс для хранения данных о достижениях пользователя.
- */
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import ru.job4j.bmb.model.Achievement;
 
-public class AchievementRepository {
+import java.util.List;
+
+@Repository
+public interface AchievementRepository extends CrudRepository<Achievement, Long> {
+    List<Achievement> findAll();
 }
