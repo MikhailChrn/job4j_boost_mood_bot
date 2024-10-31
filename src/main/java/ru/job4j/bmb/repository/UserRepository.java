@@ -1,8 +1,13 @@
 package ru.job4j.bmb.repository;
 
-/**
- * Класс, который отвечает за хранение данных о пользователях.
- */
+import ru.job4j.bmb.model.User;
 
-public class UserRepository {
+import java.util.List;
+
+public interface UserRepository {
+    List<User> findAll();
+
+    User findByClientId(Long clientId);
+
+    void add(User user);
 }
