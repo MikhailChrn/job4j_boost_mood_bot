@@ -19,6 +19,14 @@ public class Mood {
 
     private boolean good;
 
+    public Mood() {
+    }
+
+    public Mood(String text, boolean good) {
+        this.text = text;
+        this.good = good;
+    }
+
     public Long getId() {
         return id;
     }
@@ -52,11 +60,12 @@ public class Mood {
             return false;
         }
         Mood mood = (Mood) o;
-        return Objects.equals(id, mood.id);
+        return Objects.equals(id, mood.id)
+                && Objects.equals(text, mood.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id, text);
     }
 }
