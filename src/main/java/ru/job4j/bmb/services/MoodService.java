@@ -98,14 +98,13 @@ public class MoodService {
                 .findFirst()
                 .orElse(null);
 
-        long days = (moodLogRepository.findAll().stream()
+        long countOfGoodDays = (moodLogRepository.findAll().stream()
                 .filter(moodLog -> moodLog.getUser().equals(user))
-                .min(Comparator.comparing(MoodLog::getCreatedAt))
-                .get().getCreatedAt() - (Instant.now().getEpochSecond()))
-                / (60 * 60 * 24);
+                .filter(moodLog -> moodLog.getMood().isGood())
+                .count());
 
         Award award = awardRepository.findAll().stream()
-                .filter(awrd -> awrd.getDays() <= days)
+                .filter(awrd -> awrd.getDays() <= countOfGoodDays)
                 .max(Comparator.comparing(Award::getDays))
                 .orElse(null);
 
