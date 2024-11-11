@@ -5,8 +5,15 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.bmb.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findAll();
+
+    default Optional<User> findByClientId(Long clientId) {
+        return findAll().stream()
+                .filter(user -> user.getClientId() == clientId)
+                .findFirst();
+    }
 }

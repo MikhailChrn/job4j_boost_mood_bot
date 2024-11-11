@@ -1,7 +1,6 @@
 package ru.job4j.bmb.services;
 
-
-import org.jvnet.hk2.annotations.Service;
+import org.springframework.stereotype.Service;
 import ru.job4j.bmb.content.Content;
 import ru.job4j.bmb.model.*;
 import ru.job4j.bmb.repository.*;
@@ -35,7 +34,8 @@ public class MoodService {
                        MoodRepository moodRepository,
                        RecommendationEngine recommendationEngine,
                        UserRepository userRepository,
-                       AchievementRepository achievementRepository, AwardRepository awardRepository) {
+                       AchievementRepository achievementRepository,
+                       AwardRepository awardRepository) {
         this.moodLogRepository = moodLogRepository;
         this.moodRepository = moodRepository;
         this.recommendationEngine = recommendationEngine;
@@ -46,6 +46,7 @@ public class MoodService {
 
     /**
      * Позволяет пользователю выбрать текущее настроение и фиксирует этот выбор в логе событий
+     *
      * @param user
      * @param moodId
      * @return
@@ -59,6 +60,7 @@ public class MoodService {
 
     /**
      * Возвращает лог настроений пользователя за прошедшую неделю
+     *
      * @param chatId
      * @param clientId
      * @return
@@ -66,12 +68,13 @@ public class MoodService {
     public Optional<Content> weekMoodLogCommand(long chatId, Long clientId) {
         Content content = new Content(chatId);
         content.setText(formatMoodLogs(getPeriodOfMoodLogs(chatId, clientId, 7 * 24 * 60 * 60),
-                "Отчёт по состоянию настроения за последние семь дней\""));
+                "Отчёт по состоянию настроения за последние семь дней :"));
         return Optional.of(content);
     }
 
     /**
      * Возвращает лог настроений пользователя за прошедший месяц
+     *
      * @param chatId
      * @param clientId
      * @return
@@ -79,12 +82,13 @@ public class MoodService {
     public Optional<Content> monthMoodLogCommand(long chatId, Long clientId) {
         Content content = new Content(chatId);
         content.setText(formatMoodLogs(getPeriodOfMoodLogs(chatId, clientId, 30 * 24 * 60 * 60),
-                "Отчёт по состоянию настроения за последние тридцать дней\""));
+                "Отчёт по состоянию настроения за последние тридцать дней :"));
         return Optional.of(content);
     }
 
     /**
-     * Возвращает список наград, которые пользователь получил за поддержание хорошего настроения
+     * Возвращает заслуженную награду за поддержание хорошего настроения
+     *
      * @param chatId
      * @param clientId
      * @return
@@ -108,13 +112,15 @@ public class MoodService {
                 .max(Comparator.comparing(Award::getDays))
                 .orElse(null);
 
-        achievementRepository.save(new Achievement(Instant.now().getEpochSecond(), user, award));
+        content.setText(String.format("Ваше достижение :\n%s",
+                award == null ? "award not found" : award.getTitle()));
 
         return Optional.of(content);
     }
 
     /**
      * Возвращает лог настроений пользователя на произвольную глубину времени от текущего момента
+     *
      * @param chatId
      * @param clientId
      * @param seconds
@@ -135,6 +141,7 @@ public class MoodService {
 
     /**
      * Форматирует лог настроений пользователя и возвращает отчёт в виде строки
+     *
      * @param logs
      * @param title
      * @return

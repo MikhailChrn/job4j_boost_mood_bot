@@ -8,6 +8,10 @@ import ru.job4j.bmb.repository.MoodRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс отвечает за создание интерфейса для пользователя
+ */
+
 @Component
 public class TgUI {
     private final MoodRepository moodRepository;
