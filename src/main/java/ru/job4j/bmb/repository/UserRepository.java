@@ -11,9 +11,5 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findAll();
 
-    default Optional<User> findByClientId(Long clientId) {
-        return findAll().stream()
-                .filter(user -> user.getClientId() == clientId)
-                .findFirst();
-    }
+    Optional<User> findById(Long clientId);
 }

@@ -59,7 +59,7 @@ public class BotCommandHandler {
     Optional<Content> handleCallback(CallbackQuery callback) {
         Long moodId = Long.valueOf(callback.getData());
         User user = userRepository
-                .findByClientId(callback.getFrom().getId()).get();
+                .findById(callback.getFrom().getId()).get();
         return Optional.of(
                 moodService.chooseMood(user, moodId));
     }
