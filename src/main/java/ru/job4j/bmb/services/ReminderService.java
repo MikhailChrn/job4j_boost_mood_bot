@@ -1,30 +1,47 @@
 package ru.job4j.bmb.services;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import org.jvnet.hk2.annotations.Service;
-import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import ru.job4j.bmb.content.Content;
+import ru.job4j.bmb.model.User;
+import ru.job4j.bmb.repository.MoodLogRepository;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 /**
  * Класс, который управляет ежедневными напоминаниями и уведомлениями.
  */
 
 @Service
-public class ReminderService implements BeanNameAware {
+public class ReminderService {
+    private final SentContent sentContent;
+    private final MoodLogRepository moodLogRepository;
+    private final TgUI tgUI;
 
-    @Override
-    public void setBeanName(String name) {
-        System.out.println("Bean name is " + name);
+    public ReminderService(SentContent sentContent,
+                         MoodLogRepository moodLogRepository, TgUI tgUI) {
+        this.sentContent = sentContent;
+        this.moodLogRepository = moodLogRepository;
+        this.tgUI = tgUI;
     }
 
-    @PostConstruct
-    public void init() {
-        System.out.println("Bean is going through @PostConstruct init.");
+    @Scheduled(fixedRateString = "${recommendation.alert.period}")
+    public void remindUsers() {
+        long startOfDay = LocalDate.now()
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli();
+        long endOfDay = LocalDate.now()
+                .plusDays(1)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli() - 1;
+        for (User user : moodLogRepository.findUsersWhoDidNotVoteToday(startOfDay, endOfDay)) {
+            var content = new Content(user.getChatId());
+            content.setText("Как настроение?");
+            content.setMarkup(tgUI.buildButtons());
+            sentContent.sent(content);
+        }
     }
-
-    @PreDestroy
-    public void destroy() {
-        System.out.println("Bean will be destroyed via @PreDestroy.");
-    }
-
 }
