@@ -1,5 +1,6 @@
 package ru.job4j.bmb.repofake;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.test.fake.CrudRepositoryFake;
 import ru.job4j.bmb.model.User;
 import ru.job4j.bmb.repository.UserRepository;
@@ -8,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserFakeRepository extends CrudRepositoryFake<User, Long> implements UserRepository {
+public class UserFakeRepository
+        extends CrudRepositoryFake<User, Long>
+        implements UserRepository {
 
     public List<User> findAll() {
         return new ArrayList<>(memory.values());
@@ -24,7 +27,7 @@ public class UserFakeRepository extends CrudRepositoryFake<User, Long> implement
     @Override
     public User save(User user) {
         User u = super.save(user);
-        u.setId(1L);
+        u.setId(user.getId());
         return u;
     }
 }

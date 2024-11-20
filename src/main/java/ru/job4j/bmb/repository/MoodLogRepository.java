@@ -8,7 +8,6 @@ import ru.job4j.bmb.model.User;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Repository
 public interface MoodLogRepository extends CrudRepository<MoodLog, Long> {
     List<MoodLog> findAll();
 
@@ -16,9 +15,15 @@ public interface MoodLogRepository extends CrudRepository<MoodLog, Long> {
 
     Stream<MoodLog> findByUserIdOrderByCreatedAtDesc(Long userId);
 
-    List<User> findUsersWhoDidNotVoteToday(long startOfDay, long endOfDay);
+    default List<User> findUsersWhoDidNotVoteToday(long startOfDay, long endOfDay) {
+        return null;
+    }
 
-    List<MoodLog> findMoodLogsForWeek(Long userId, long weekStart);
+    default List<MoodLog> findMoodLogsForWeek(Long userId, long weekStart) {
+        return null;
+    }
 
-    List<MoodLog> findMoodLogsForMonth(Long userId, long monthStart);
+    default List<MoodLog> findMoodLogsForMonth(Long userId, long monthStart) {
+        return null;
+    }
 }

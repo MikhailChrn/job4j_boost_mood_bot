@@ -1,5 +1,6 @@
 package ru.job4j.bmb.repofake;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.test.fake.CrudRepositoryFake;
 import ru.job4j.bmb.model.Mood;
 import ru.job4j.bmb.repository.MoodRepository;
