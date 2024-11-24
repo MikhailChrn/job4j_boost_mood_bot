@@ -33,20 +33,11 @@ class RepositoriesTest {
     @Qualifier("moodLogFakeRepository")
     private MoodLogFakeRepository moodLogRepository;
 
-    User user;
-    Mood mood;
-    MoodLog moodLog;
-
-    {
-        user = new User(2L, 4L, 6L);
-        mood = new Mood("Хорошо", true);
-        moodLog = new MoodLog(user, mood, 999L);
-    }
-
     @Test
     public void addUser() {
+        User user = new User(2L, 4L, 6L);
         userRepository.save(user);
-        assertThat(userRepository.findAll().stream().findFirst()
+        assertThat(userRepository.findById(user.getId()).stream().findFirst()
                 .get()
                 .getChatId())
                 .isEqualTo(user.getChatId());
@@ -54,8 +45,9 @@ class RepositoriesTest {
 
     @Test
     public void addMood() {
+        Mood mood = new Mood("Хорошо", true);
         moodRepository.save(mood);
-        assertThat(moodRepository.findAll().stream().findFirst()
+        assertThat(moodRepository.findById(mood.getId())
                 .get()
                 .getText())
                 .isEqualTo(mood.getText());
@@ -63,8 +55,11 @@ class RepositoriesTest {
 
     @Test
     public void addMoodLog() {
+        User user = new User(2L, 4L, 6L);
+        Mood mood = new Mood("Хорошо", true);
+        MoodLog moodLog = new MoodLog(user, mood, 999L);
         moodLogRepository.save(moodLog);
-        assertThat(moodLogRepository.findAll().stream().findFirst()
+        assertThat(moodLogRepository.findById(moodLog.getId())
                 .get()
                 .getUser()
                 .getClientId())
